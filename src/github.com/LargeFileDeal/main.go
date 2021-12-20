@@ -23,28 +23,25 @@ func main() {
 	file, err := os.Open(filePath)                   //打开文件
 	if err != nil {
 		fmt.Printf("Error %s\n", err)
+		panic(err)
 	}
 	defer file.Close() //程序执行完毕后关闭文件
 
-	if err != nil {
-		fmt.Printf("Error %s\n", err)
-	}
 	buf := bufio.NewReader(file)
 
 	//3.将文件内存存入bitmap
 	for {
 		line, _, err := buf.ReadLine() //按行读取
-		lineStr := strings.TrimSpace(string(line))
-		fmt.Println(lineStr)
-		bitMapInt, _ := strconv.ParseUint(lineStr, 10, 64)
-		bitMap.Add(uint(bitMapInt))
 		if err != nil {
 			if err == io.EOF {
 				break
 			}
 			fmt.Printf("Error %s\n", err)
-			break
+			panic(err)
 		}
+		lineStr := strings.TrimSpace(string(line))
+		bitMapInt, err := strconv.ParseUint(lineStr, 10, 64)
+		bitMap.Add(uint(bitMapInt))
 	}
 
 	//4.判断输入手机号是否在文件中存在
@@ -56,6 +53,7 @@ func main() {
 		phoneNo1, err := strconv.ParseUint(phoneNo, 10, 64)
 		if err != nil {
 			fmt.Printf("Error %s\n", err)
+			panic(err)
 		}
 		isExist = bitMap.IsExist(uint(phoneNo1))
 		if isExist {
