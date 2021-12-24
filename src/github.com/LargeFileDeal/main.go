@@ -16,11 +16,11 @@ import (
 */
 func main() {
 	//1.bitmap结构初始化
-	bitMap := NewBitMap(100000000000)
+	bitmap := NewBitMap(100000000000)
 
 	//2.打开文件
-	filePath := "C:\\Users\\办公室\\Desktop\\phone.txt" //文件路径
-	file, err := os.Open(filePath)                   //打开文件
+	filepath := "C:\\Users\\办公室\\Desktop\\phone.txt" //文件路径
+	file, err := os.Open(filepath)                   //打开文件
 	if err != nil {
 		fmt.Printf("Error %s\n", err)
 		panic(err)
@@ -45,24 +45,24 @@ func main() {
 			fmt.Printf("Error %s\n", err)
 			panic(err)
 		}
-		lineStr := strings.TrimSpace(string(line))
-		bitMapInt, err := strconv.ParseUint(lineStr, 10, 64)
-		bitMap.Add(uint(bitMapInt))
+		linestring := strings.TrimSpace(string(line))
+		phone, err := strconv.ParseUint(linestring, 10, 64)
+		bitmap.Add(uint(phone))
 	}
 
 	//4.判断输入手机号是否在文件中存在
 	scanner := bufio.NewScanner(os.Stdin) //标准输入文件
-	isExist := false                      //手机号码是否存在
+	exist := false                        //手机号码是否存在
 	fmt.Println("请输入需要查重的手机号码：")
 	for scanner.Scan() {
-		phoneNo := scanner.Text() //读控制台输入文本
-		phoneNo1, err := strconv.ParseUint(phoneNo, 10, 64)
+		control := scanner.Text() //读控制台输入文本
+		phone, err := strconv.ParseUint(control, 10, 64)
 		if err != nil {
 			fmt.Printf("Error %s\n", err)
 			panic(err)
 		}
-		isExist = bitMap.IsExist(uint(phoneNo1))
-		if isExist {
+		exist = bitmap.IsExist(uint(phone))
+		if exist {
 			fmt.Println("该手机号码在文件中存在")
 		} else {
 			fmt.Println("该手机号码在文件中不存在")
